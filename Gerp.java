@@ -4,7 +4,8 @@
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 public class Gerp {
     public static void main(String[] args) {
@@ -15,19 +16,20 @@ public class Gerp {
             System.exit(1);
         }
 
-        // now lets open a file!
-        Path toSearchIn = Path.of(args[1]);
+        Stream<String> file = null;
 
-        String out = null;
-        
+        // now lets open a file!
         try {
-            out = Files.readString(toSearchIn);
+            file = Files.lines(Paths.get(args[1]));
         } catch (IOException e) {
-            System.err.println("Error: file not found");
+            System.out.println("Error: File does not exist.");
             System.exit(1);
         }
 
-        // for now, since we are not searching, just print the file contents
-        System.out.print(out);
+        Object[] fileContentIncrements = file.toArray();
+        
+        for (int i = 0; i < fileContentIncrements.length; i++) {
+            System.out.println((i + 1) + ": " + fileContentIncrements[i]);
+        }
     }
 }
